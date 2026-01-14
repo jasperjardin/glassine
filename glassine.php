@@ -1,14 +1,18 @@
 <?php
 /**
- * Plugin Name:       Glassine
- * Description:       Example block scaffolded with Create Block tool.
- * Version:           0.1.0
- * Requires at least: 6.7
- * Requires PHP:      7.4
- * Author:            The WordPress Contributors
- * License:           GPL-2.0-or-later
- * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       glassine
+ * Plugin Name:			Glassine
+ * Description:       	A technical showcase plugin featuring a modular
+ * 						Testimonial Slider. Demonstrates clean functional
+ * 						programming, intuitive drag-and-drop Gutenberg block
+ * 						development, and an optimized asset loading system for
+ * 						modern WordPress environments.
+ * Version:				0.1.0
+ * Requires at least:	6.7
+ * Requires PHP:		7.4
+ * Author:				Jasper B Jardin
+ * License:				GPL-2.0-or-later
+ * License URI:			https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:			glassine
  *
  * @package Glassine
  */
@@ -77,7 +81,7 @@ function glassine_resources_registry( array $args = array() ) {
 
     foreach ( $processors as $type => $register_func ) {
         $arg_key = "{$type}_id";
-        
+
         if ( empty( $args[$arg_key] ) || ! is_array( $args[$arg_key] ) ) {
             continue;
         }
@@ -96,10 +100,10 @@ function glassine_resources_registry( array $args = array() ) {
 
                 $item	= $collection[$lib_key][$type][$res_key];
 				$handle = $item['id'];
-                
+
 				/**
 				 * Duplication Prevention Checker
-				 * 
+				 *
 				 * Use the private utility to avoid duplicated registrations.
 				 */
 				if ( _glassine_is_asset_registered( $handle, $type ) ) {
@@ -111,20 +115,20 @@ function glassine_resources_registry( array $args = array() ) {
 
                 // Execute dynamic registration
                 if ( $type === 'css' ) {
-                    $register_func( 
-                        $item['id'], 
-                        $data['src'], 
-                        $item['deps'] ?? array(), 
-                        $data['ver'], 
-                        $item['media'] ?? 'all' 
+                    $register_func(
+                        $item['id'],
+                        $data['src'],
+                        $item['deps'] ?? array(),
+                        $data['ver'],
+                        $item['media'] ?? 'all'
                     );
                 } else {
-                    $register_func( 
-                        $item['id'], 
-                        $data['src'], 
-                        $item['deps'] ?? array(), 
-                        $data['ver'], 
-                        $item['args'] ?? array() 
+                    $register_func(
+                        $item['id'],
+                        $data['src'],
+                        $item['deps'] ?? array(),
+                        $data['ver'],
+                        $item['args'] ?? array()
                     );
                 }
             }
@@ -135,19 +139,19 @@ function glassine_resources_registry( array $args = array() ) {
 /**
  * Internal helper to resolve source URLs and versioning.
  * Strictly handles the logic for pathing and cache-busting.
- * 
+ *
  * @private
  */
 function _glassine_resolve_asset_data( array $item ) {
     $src = $item['src'] ?? '';
     $is_external = str_starts_with( $src, 'http' ) || str_starts_with( $src, '//' );
-    
+
     // Resolve URL
     $resolved_src = $is_external ? $src : plugins_url( $src, __FILE__ );
 
     // Resolve Version
     $ver = ! empty( $item['ver'] ) ? $item['ver'] : false;
-    
+
     if ( ! $ver && ! $is_external ) {
         $file_path = plugin_dir_path( __FILE__ ) . $src;
         $ver = file_exists( $file_path ) ? filemtime( $file_path ) : '1.0.0';
@@ -168,8 +172,8 @@ function _glassine_resolve_asset_data( array $item ) {
  * @return bool True if registered, false otherwise.
  */
 function _glassine_is_asset_registered( string $handle, string $type = 'js' ) : bool {
-    return ( $type === 'css' ) 
-        ? wp_style_is( $handle, 'registered' ) 
+    return ( $type === 'css' )
+        ? wp_style_is( $handle, 'registered' )
         : wp_script_is( $handle, 'registered' );
 }
 
@@ -230,7 +234,7 @@ function _glassine_get_resources_from_manifest( array $settings ) : array {
  */
 function glassine_blocks_registry() {
 	$manifest_path = __DIR__ . '/build/blocks-manifest.php';
-    
+
 	if ( ! file_exists( $manifest_path ) ) {
         return;
     }
@@ -239,12 +243,12 @@ function glassine_blocks_registry() {
 
 	/**
      * Resource Auto-Registration
-	 * 
+	 *
      * Scan the manifest to see if any blocks require external library handles.
      */
     foreach ( $manifest_data as $block_settings ) {
         $required_resources = _glassine_get_resources_from_manifest( $block_settings );
-        
+
         if ( ! empty( $required_resources['js_id'] ) || ! empty( $required_resources['css_id'] ) ) {
             glassine_resources_registry( $required_resources );
         }
@@ -252,9 +256,9 @@ function glassine_blocks_registry() {
 
 	/**
      * Block Registration
-	 * 
+	 *
      * Standard WordPress 6.7/6.8 high-performance registration.
-	 * 
+	 *
 	 * Registers the block(s) metadata from the `blocks-manifest.php` and registers the block type(s)
 	 * based on the registered block metadata.
 	 * Added in WordPress 6.8 to simplify the block metadata registration process added in WordPress 6.7.

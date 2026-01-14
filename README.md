@@ -1,6 +1,6 @@
 # 💎 Glassine
 
-**Author:** Jasper Jardin
+**Author:** Jasper B. Jardin
 
 **Tags:** block
 
