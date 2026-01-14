@@ -1,0 +1,154 @@
+.wp-block-glassine-testimonials {
+	$ts-glass: rgba(255, 255, 255, 0.1);
+	$ts-border: rgba(255, 255, 255, 0.2);
+	$ts-blur: 15px;
+	$ts-text: #333;
+
+	&::selection, 
+    *::selection {
+        background-color: var(--accent-color);
+        color: #fff;
+    }
+
+    &::-moz-selection,
+    *::-moz-selection {
+        background-color: var(--accent-color);
+        color: #fff;
+    }
+	
+	.testimonial-slider {
+		padding: 40px 60px;
+		position: relative;
+		margin: 0 auto;
+	
+		&__wrapper {
+			display: flex;
+			align-items: stretch;
+		}
+	
+		&__item {
+			width: 100%; 
+            box-sizing: border-box; 
+			text-align: center;
+
+			&--editable {
+				margin-bottom: 20px;
+				cursor: default;
+			}
+		}
+
+		&__contents {
+			background: $ts-glass;
+			backdrop-filter: blur($ts-blur);
+			-webkit-backdrop-filter: blur($ts-blur);
+			border: 1px solid $ts-border;
+			border-radius: 20px;
+			padding: 60px 40px 40px;
+			transition: transform 0.3s ease;
+			box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+		}
+
+		&__image-container {
+			width: 80px;
+			height: 80px;
+			margin: 0 auto 50px;
+			border-radius: 50%;
+			overflow: hidden;
+			border: 3px solid var(--accent-color, #fff);
+			box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+		}
+	
+		&__image {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	
+		&__quote {
+			font-size: 1.25rem;
+			line-height: 1.6;
+			font-style: italic;
+			color: $ts-text;
+			margin-bottom: 20px;
+			position: relative;
+	
+			&::before {
+				content: '“';
+				font-size: 4rem;
+				position: absolute;
+				top: -50px;
+				left: 50%;
+				transform: translateX(-50%);
+				opacity: 0.2;
+				font-family: serif;
+			}
+		}
+	
+		&__author {
+			display: block;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+			font-size: 0.9rem;
+			color: var(--accent-color, #555);
+		}
+	
+		&__handle {
+			cursor: grab;
+			padding: 5px;
+			color: #999;
+			text-align: center;
+			font-size: 20px;
+		}
+	
+		&__remove {
+			position: absolute;
+			top: 15px;
+			right: 15px;
+			background: #ff4d4d;
+			color: white;
+			border-radius: 50%;
+			min-width: 24px;
+			height: 24px;
+			padding: 0;
+			line-height: 24px;
+
+			&::before,
+			&::after {
+				content: "";
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				width: 2px;
+				height: 65%;
+				background-color: #fff;
+				border-radius: 2px;
+			}
+	
+			&::before {
+				transform: translate(-50%, -50%) rotate(45deg);
+			}
+	
+			&::after {
+				transform: translate(-50%, -50%) rotate(-45deg);
+			}
+		}
+
+		&__btn {
+			color: var(--accent-color, #007cba);
+			opacity: 0.25;
+			transition: opacity 0.5s ease-in-out;
+			
+			&:hover,
+			&:active,
+			&:focus {
+				outline: none;
+				opacity: 1;
+			}
+		}
+	
+		.swiper-pagination-bullet-active {
+			background: var(--accent-color, #007cba);
+		}
+	}
+}
